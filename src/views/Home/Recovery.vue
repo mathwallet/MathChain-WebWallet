@@ -30,10 +30,10 @@ export default {
   methods: {
     getEmail() {
       if (!this.address) {
-        return this.$toast(this.$t("enterTargetAddressFirst"));
+        return this.$toast(this.$t("enter_target_address_first"));
       }
       if (this.address == this.account.address) {
-        return this.$toast(this.$t("targetAddressNoCurrent"));
+        return this.$toast(this.$t("target_address_not_current"));
       }
       this.axios
         .get(
@@ -58,7 +58,7 @@ export default {
     },
     async recovery(code) {
       if (!code) {
-        return this.$toast(this.$t("enterCodeFirst"));
+        return this.$toast(this.$t("enter_code_first"));
       }
 
       this.$loading(1);
@@ -74,7 +74,7 @@ export default {
 
       if (!signRes || !signRes.mathSign) {
         this.$loading(0);
-        return this.$toast(this.$t("signError"), 3000);
+        return this.$toast(this.$t("sign_error"));
       }
 
       this.axios
@@ -91,7 +91,7 @@ export default {
         .then((result) => {
           this.$loading(0);
           if (result.data.success) {
-            this.$toast(this.$t("recoverySuccess"));
+            this.$toast(this.$t("recovery_success"));
           } else {
             this.$toast(result.data.message, 3000);
           }

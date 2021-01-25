@@ -5,7 +5,7 @@ import {
   web3Enable,
   web3FromSource,
 } from "@polkadot/extension-dapp";
-
+import util from "./util";
 web3Enable("mathwallet");
 
 class User {
@@ -48,6 +48,17 @@ class User {
         },
         Nickname: "String",
         Ethereum: "H160",
+        TransferAmountInfo: {
+          date: "u64",
+          daily_info: "Balance",
+          monthly_info: "Balance",
+          yearly_info: "Balance",
+        },
+        AccountLimit: {
+          daily_limit: "Balance",
+          monthly_limit: "Balance",
+          yearly_limit: "Balance",
+        },
       },
     });
   }
@@ -136,6 +147,32 @@ class User {
     const api = await this.api;
     return await api.query.system.account(account).then((res) => {
       return res;
+    });
+  }
+
+  async getLimit(account) {
+    const api = await this.api;
+    return await api.query.balances.limits(account).then((res) => {
+      return res.toJSON();
+    });
+  }
+
+  async getRemainLimit(account, daily_limit, decimals) {
+    const api = await this.api;
+    return await api.query.balances.transferInfo(account).then((res) => {
+      let result = res.toJSON();
+      if (result) {
+        let nowDate = new Date().getDate();
+        let resDate = new Date(result.date * 1000).getDate();
+        if (nowDate == resDate) {
+          return util
+            .BigNumber(daily_limit)
+            .minus(result.daily_info)
+            .div(Math.pow(10, decimals))
+            .toFormat(4);
+        }
+      }
+      return util.formatByDecimal(daily_limit, decimals);
     });
   }
 }

@@ -81,23 +81,21 @@ export default {
           .signAndSend(this.account.address, (status) => {
             if (status.isCompleted && status.isInBlock && !status.isError) {
               if (status.findRecord("system", "ExtrinsicSuccess")) {
-                this.$loading(0);
-                this.$toast(this.$t("transfer_success"));
-                this.transferring = false;
-                setTimeout(() => {
+                this.$toast(this.$t("transfer_success")).then(()=>{
                   window.location.reload();
-                }, 2000);
-              } else {
-                this.$loading(0);
+                })
                 this.transferring = false;
-                this.$toast(this.$t("transfer_fail"), 3000);
+              } else {
+                this.transferring = false;
+                this.$toast(this.$t("transfer_fail"));
               }
+              this.$loading(0);
             }
           })
           .catch((err) => {
             console.log(err);
             this.$loading(0);
-            this.$toast(this.$t("transfer_fail"), 3000);
+            this.$toast(this.$t("transfer_fail"));
             this.transferring = false;
           });
       });

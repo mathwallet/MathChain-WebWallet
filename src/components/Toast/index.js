@@ -17,19 +17,22 @@ Toast.install = function (Vue) {
     // 通过Vue的原型注册一个方法
     // 让所有实例共享这个方法
     // 其中的duration是持续时间
-    Vue.prototype.$toast = (toastInfo, duration = 2000) => {
-        instance.info = toastInfo;
-        instance.toastShow = true;
+    Vue.prototype.$toast = ( toastInfo, duration = 2000 ) => {
+        return new Promise( resolve => {
+            instance.info = toastInfo;
+            instance.toastShow = true;
 
-        setTimeout(() => {
-            instance.toastShow = false;
-        }, duration);
+            setTimeout(() => {
+                instance.toastShow = false;
+                resolve();
+            }, duration);
 
-        instance.close = ()=>{
-            instance.toastShow = false;
-        }
+            instance.close = ()=>{
+                instance.toastShow = false;
+                resolve();
+            }
+        })
 
-        return instance
     }
 
 }

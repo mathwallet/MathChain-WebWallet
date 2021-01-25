@@ -62,12 +62,11 @@ export default {
     noExtension() {
       this.$confirm({
         info: this.$t("noMathExtension"),
-        yesBtn: this.$t("download"),
-        success: () => {
-          window.open("https://mathwallet.org");
-          window.location.reload();
-        },
-      });
+        yesBtn: this.$t("download")
+      }).then(()=>{
+        window.open("https://mathwallet.org");
+        window.location.reload();
+      })
     },
   },
 };

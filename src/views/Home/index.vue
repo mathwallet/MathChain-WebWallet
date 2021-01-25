@@ -5,6 +5,12 @@
       <div class="main-container">
         <!-- tab -->
         <ul class="tabs">
+          <li
+            :class="{ active: selectedTab == 'transfer' }"
+            @click="selectedTab = 'transfer'"
+          >
+            {{ $t("transfer") }}
+          </li>
           <li>
             <a
               :href="
@@ -29,6 +35,7 @@
         <EVMAddress v-if="selectedTab == 'EVM_address'" />
         <DID v-if="selectedTab == 'DID'" />
         <Recovery v-if="selectedTab == 'recovery'" />
+        <Limit v-if="selectedTab == 'limit'" />
       </div>
     </section>
   </div>
@@ -40,11 +47,12 @@ import Transfer from "./Transfer";
 import EVMAddress from "./EVMAddress.vue";
 import DID from "./DID.vue";
 import Recovery from "./Recovery.vue";
+import Limit from "./Limit.vue";
 export default {
   data() {
     return {
       selectedTab: "transfer",
-      tabList: ["transfer","EVM_address", "DID", "recovery"],
+      tabList: ["EVM_address", "DID", "recovery", "limit"],
     };
   },
   created() {
@@ -60,6 +68,7 @@ export default {
     EVMAddress,
     DID,
     Recovery,
+    Limit,
   },
 };
 </script>

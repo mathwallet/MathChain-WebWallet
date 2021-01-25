@@ -40,55 +40,54 @@ export default {
         params = { address: this.propAddress };
       } else {
         if (!this.email || !this.webUtil.formatEmail(this.email)) {
-          return this.$toast(this.$t("enterEmailFirst"));
+          return this.$toast(this.$t("enter_email_first"));
         }
         params = { email: this.email };
       }
 
       let AliCaptchaCallbackFunc = (result) => {
-        if (typeof result != "undefined") {
-          if (
-            result.data &&
-            result.getCaptchaData(result.data).humanCheckMode &&
-            !result.ticket
-          ) {
-            var captcha = result.getCaptchaData(result.data);
-            params.humanCheckMode = captcha.humanCheckMode;
-            params.humanCheckParams = captcha.humanCheckParams;
+        if (
+          result &&
+          result.data &&
+          result.getCaptchaData(result.data).humanCheckMode &&
+          !result.ticket
+        ) {
+          var captcha = result.getCaptchaData(result.data);
+          params.humanCheckMode = captcha.humanCheckMode;
+          params.humanCheckParams = captcha.humanCheckParams;
 
-            this.$loading(1);
+          this.$loading(1);
 
-            this.axios
-              .post(
-                this.apiDomain + "apiPolka/getMathDIDEmailCode?v=1.0",
-                this.webUtil.qsStringify(params)
-              )
-              .then((res) => {
-                this.$loading(0);
-                if (res.data.success) {
-                  this.sendTimeout = 59;
+          this.axios
+            .post(
+              this.apiDomain + "apiPolka/getMathDIDEmailCode?v=1.0",
+              this.webUtil.qsStringify(params)
+            )
+            .then((res) => {
+              this.$loading(0);
+              if (res.data.success) {
+                this.sendTimeout = 59;
 
-                  if (this.timer) {
-                    clearInterval(this.timer);
-                  }
-                  this.timer = setInterval(() => {
-                    if (this.sendTimeout > 0) {
-                      this.sendTimeout--;
-                    } else {
-                      clearInterval(this.timer);
-                      this.timer = null;
-                    }
-                  }, 1000);
-                } else {
-                  this.$toast(res.data.message);
+                if (this.timer) {
+                  clearInterval(this.timer);
                 }
-              })
-              .catch((err) => {
-                console.log(err);
-                this.$toast(err, 3000);
-                this.$loading(0);
-              });
-          }
+                this.timer = setInterval(() => {
+                  if (this.sendTimeout > 0) {
+                    this.sendTimeout--;
+                  } else {
+                    clearInterval(this.timer);
+                    this.timer = null;
+                  }
+                }, 1000);
+              } else {
+                this.$toast(res.data.message);
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              this.$toast(err, 3000);
+              this.$loading(0);
+            });
         }
       };
       let AliCaptcha = this.$AliCaptcha(AliCaptchaCallbackFunc);

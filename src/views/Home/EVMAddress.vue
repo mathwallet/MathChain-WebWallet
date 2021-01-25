@@ -51,7 +51,7 @@ export default {
         !signRes.ethSign
       ) {
         this.$loading(0);
-        return this.$toast(this.$t("createAddressError"), 3000);
+        return this.$toast(this.$t("create_address_error"));
       }
 
 
@@ -71,7 +71,7 @@ export default {
           if(result.data.success){
             this.setEVMAddress(signRes.ethAddr)
           }else{
-            this.$toast(this.$t("createAddressError"), 3000);
+            this.$toast(this.$t("create_address_error"));
           }
           this.$loading(0);
         })

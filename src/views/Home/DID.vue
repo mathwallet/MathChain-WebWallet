@@ -17,10 +17,10 @@ export default {
   methods: {
     async backup(code, email) {
       if (!email || !this.webUtil.formatEmail(email)) {
-        return this.$toast(this.$t("enterEmailFirst"));
+        return this.$toast(this.$t("enter_email_first"));
       }
       if (!code) {
-        return this.$toast(this.$t("enterCodeFirst"));
+        return this.$toast(this.$t("enter_code_first"));
       }
 
       this.$loading(1);
@@ -36,7 +36,7 @@ export default {
 
       if (!signRes || !signRes.mathSign) {
         this.$loading(0);
-        return this.$toast(this.$t("signError"), 3000);
+        return this.$toast(this.$t("sign_error"));
       }
 
       this.axios
@@ -53,7 +53,7 @@ export default {
         .then((result) => {
           this.$loading(0);
           if (result.data.success) {
-            this.$toast(this.$t("DIDSuccess"), 3000);
+            this.$toast(this.$t("DID_success"));
             this.setBackupEmail(result.data.data.email);
           } else {
             this.$toast(result.data.message, 3000);

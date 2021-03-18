@@ -3,10 +3,11 @@ import {
   isWeb3Injected,
   web3Accounts,
   web3Enable,
+  web3FromAddress,
   web3FromSource,
 } from "@polkadot/extension-dapp";
 import util from "./util";
-web3Enable("mathwallet");
+web3Enable("mathchain");
 
 class User {
   constructor() {
@@ -99,15 +100,22 @@ class User {
   // 签名操作
   async signMessage(account, str = "Hello world") {
     const injector = await web3FromSource(account.meta.source);
-    let signRes = await injector.signer.signMessageByMath(
-      account.address,
-      str,
-      "Sign message by Math",
-      false
+    // let signRes = await injector.signer.signMessageByMath(
+    //   account.address,
+    //   str,
+    //   "Sign message by Math",
+    //   false
+    // );
+    let signRes = await injector.signer.signRaw({
+        address: account.address,
+        data: str,
+        type: "mathchain"
+      }
     );
+    let signatures = signRes ? signRes.signatures : null;
     let result = {};
-    if (signRes && signRes.length > 0) {
-      signRes.map((v) => {
+    if (signatures && signatures.length > 0) {
+      signatures.map((v) => {
         if (v.chain == "ethereum") {
           result.ethAddr = v.address;
           result.ethSign = v.signature;

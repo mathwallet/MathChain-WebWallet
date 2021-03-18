@@ -47,10 +47,10 @@ export default {
       tokenList: ["MATH"],
       amount: "",
       signing: false,
-      remainLimit: 10000,
-      defaultLimit: 10000,
+      remainLimit: 1000,
+      defaultLimit: 1000,
       limit: {
-        daily_limit: "10000000000000000000000",
+        daily_limit: "1000000000000000000000",
         monthly_limit: "100000000000000000000000",
         yearly_limit: "1000000000000000000000000000",
       },

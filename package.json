@@ -7,7 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@polkadot/api": "^3.3.2",
+    "@polkadot/api": "^4.0.1-9",
     "@polkadot/extension-dapp": "^0.35.1",
     "axios": "^0.19.2",
     "bignumber.js": "^9.0.0",

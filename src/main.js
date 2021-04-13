@@ -98,7 +98,8 @@ Vue.mixin({
         if (k.includes("Balance")) {
           balanceList[k] = this.webUtil.fixedByDecimal(
             balanceList[k].toString(),
-            this.decimals
+            this.decimals,
+            6
           );
         } else {
           balanceList[k] = balanceList[k].toString();

@@ -19,7 +19,7 @@
         <ul class="token-list">
           <li v-for="(value, key) in formatBalanceList" :key="key">
             <p>{{ $t(key) }} {{ symbol }}</p>
-            <p>{{ value ? webUtil.addCommas(value, 4) : "0.00" }}</p>
+            <p>{{ value ? webUtil.addCommas(value, 6) : "0.00" }}</p>
           </li>
         </ul>
       </div>
@@ -68,7 +68,7 @@ export default {
       this.totalPrice = this.webUtil.computePriceByCoin(
         this.balanceList.freeBalance,
         price,
-        this.legalCoin
+        this.legalCoin,
       );
     },
     refresh() {

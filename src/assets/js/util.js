@@ -97,27 +97,27 @@ export default {
 
   // 数字千分位，保留n位小数格式化
   addCommas( num, point = 2 ) {
-    return new BigNumber( num ).toFormat( point, BigNumber.ROUND_FLOOR );
+    return new BigNumber( num ).toFormat( point, 1 );
   },
 
   // 根据法币不同计算金额
   fixedByCoin( num, legalCoin ) {
-    return new BigNumber( num ).div( legalCoin.rmb ).toFixed( legalCoin.point - 0, BigNumber.ROUND_FLOOR );
+    return new BigNumber( num ).div( legalCoin.rmb ).toFixed( legalCoin.point - 0, 1 );
   },
 
   // 根据法币不同计算价格
   computePriceByCoin( num, tokenPrice, legalCoin ) {
-    return new BigNumber( num ).times( tokenPrice ).div( legalCoin.rmb ).toFormat( legalCoin.point - 0, BigNumber.ROUND_FLOOR );
+    return new BigNumber( num ).times( tokenPrice ).div( legalCoin.rmb ).toFormat( legalCoin.point - 0, 1 );
   },
 
   // 根据精度不同千分化数据
   formatByDecimal( num, decimal, point = 4 ) {
-    return new BigNumber( num ).div( Math.pow( 10, decimal ) ).toFormat( point, BigNumber.ROUND_FLOOR );
+    return new BigNumber( num ).div( Math.pow( 10, decimal ) ).toFormat( point, 1 );
   },
 
   // 根据精度不同获取数据
   fixedByDecimal( num, decimal, point = 4 ) {
-    return new BigNumber( num ).div( Math.pow( 10, decimal ) ).toFixed( point, BigNumber.ROUND_FLOOR );
+    return new BigNumber( num ).div( Math.pow( 10, decimal ) ).toFixed( point, 1 );
   },
 
   // 根据精度不同计算数据 乘法

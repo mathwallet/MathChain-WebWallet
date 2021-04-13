@@ -20,7 +20,7 @@
         </select>
       </li>
     </ul>
-    <label>{{ $t("webwallet_fee") }} {{ fee ? fee : "-m " + symbol }}</label>
+    <label>{{ $t("webwallet_fee") }} {{ fee ? fee : "-m " }} {{symbol}}</label>
 
     <a class="block-btn btn disabled" v-if="transferring">{{$t("signing")}}</a>
     <a class="block-btn btn" v-else @click="sendTransfer">{{$t("transfer")}}</a>
@@ -34,18 +34,16 @@ export default {
       destination: "",
       transferring: false,
       tokenList: ["MATH"],
-      transferFee: [],
+      transferFee:0,
     };
   },
   computed: {
     fee() {
       if (this.amount && this.destination && this.amount - 0 > 0) {
-        this.getTransferFee(this.destination, this.amount).then((res) => {
-          this.$set(this.transferFee, 0, res);
-        });
-        return this.transferFee[0];
+        this.getTransferFee(this.destination, this.amount)
+        return this.transferFee;
       } else {
-        return "-m " + this.symbol;
+        return 0;
       }
     },
   },
@@ -101,11 +99,18 @@ export default {
       });
     },
     getTransferFee(to, amount) {
-      return this.user.getApi().then(async (api) => {
-        let amountFormat = this.webUtil.timesByDecimal(amount, this.decimal);
+      this.user.getApi().then(async (api) => {
+        let amountFormat = this.webUtil.timesByDecimal(
+          amount,
+          this.decimals
+        );
         let transfer = await api.tx.balances.transfer(to, amountFormat);
         let payment = await transfer.paymentInfo(this.account.address);
-        return payment.partialFee.toHuman();
+        this.transferFee = this.webUtil.fixedByDecimal(
+            payment.partialFee.toString(),
+            this.decimals,
+            this.decimals
+          )
       });
     },
   },
